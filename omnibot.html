@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omnibot AI | Premium Multi-Modal Assistant</title>
+    <!-- Content Security Policy to allow images from all sources -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:; img-src 'self' https: data: blob: *;">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            'premium-dark': '#0a0a0a',
+                            'premium-gray': '#1a1a1a',
+                            'premium-card': '#242424',
+                            'premium-border': '#333333',
+                            'accent-primary': '#6366f1',
+                            'accent-secondary': '#8b5cf6',
+                            'accent-glow': '#a78bfa',
+                        },
+                        fontFamily: {
+                            'outfit': ['Outfit', 'sans-serif'],
+                        },
+                        typography: (theme) => ({
+                            invert: {
+                                css: {
+                                    '--tw-prose-body': theme('colors.gray[300]'),
+                                    '--tw-prose-headings': theme('colors.white'),
+                                    '--tw-prose-links': theme('colors.accent-primary'),
+                                    '--tw-prose-bold': theme('colors.white'),
+                                    '--tw-prose-counters': theme('colors.gray[400]'),
+                                    '--tw-prose-bullets': theme('colors.gray[400]'),
+                                    '--tw-prose-hr': theme('colors.premium-border'),
+                                    '--tw-prose-quotes': theme('colors.gray[100]'),
+                                    '--tw-prose-quote-borders': theme('colors.accent-primary'),
+                                    '--tw-prose-captions': theme('colors.gray[400]'),
+                                    '--tw-prose-code': theme('colors.white'),
+                                    '--tw-prose-pre-code': theme('colors.gray[200]'),
+                                    '--tw-prose-pre-bg': 'theme("colors.premium-dark")',
+                                    '--tw-prose-th-borders': theme('colors.premium-border'),
+                                    '--tw-prose-td-borders': theme('colors.premium-border'),
+                                },
+                            },
+                        }),
+                        animation: {
+                            'gradient': 'gradient 8s ease infinite',
+                            'float': 'float 6s ease-in-out infinite',
+                            'glow': 'glow 2s ease-in-out infinite alternate',
+                        },
+                        keyframes: {
+                            gradient: {
+                                '0%, 100%': { 'background-position': '0% 50%' },
+                                '50%': { 'background-position': '100% 50%' },
+                            },
+                            float: {
+                                '0%, 100%': { transform: 'translateY(0px)' },
+                                '50%': { transform: 'translateY(-10px)' },
+                            },
+                            glow: {
+                                '0%': { 'box-shadow': '0 0 20px rgba(99, 102, 241, 0.3)' },
+                                '100%': { 'box-shadow': '0 0 30px rgba(139, 92, 246, 0.6)' },
+                            }
+                        }
+                    }
+                },
+                plugins: [
+                    function ({ addUtilities }) {
+                        addUtilities({
+                            '.prose': {
+                                maxWidth: '65ch',
+                                color: 'inherit',
+                                '& a': {
+                                    color: 'theme("colors.accent-primary")',
+                                    textDecoration: 'underline',
+                                    fontWeight: '500',
+                                },
+                                '& strong': {
+                                    color: 'white',
+                                    fontWeight: '600',
+                                },
+                                '& ol': {
+                                    listStyleType: 'decimal',
+                                    paddingLeft: '1.625em',
+                                },
+                                '& ul': {
+                                    listStyleType: 'disc',
+                                    paddingLeft: '1.625em',
+                                },
+                                '& li': {
+                                    marginTop: '0.5em',
+                                    marginBottom: '0.5em',
+                                },
+                                '& h1, & h2, & h3, & h4': {
+                                    color: 'white',
+                                    fontWeight: '600',
+                                    marginTop: '2em',
+                                    marginBottom: '1em',
+                                    lineHeight: '1.3',
+                                },
+                                '& pre': {
+                                    backgroundColor: 'theme("colors.premium-dark")',
+                                    borderRadius: '0.5rem',
+                                    padding: '1rem',
+                                    overflowX: 'auto',
+                                    marginTop: '1.5em',
+                                    marginBottom: '1.5em',
+                                },
+                                '& code': {
+                                    color: 'theme("colors.accent-glow")',
+                                    backgroundColor: 'theme("colors.premium-dark")',
+                                    padding: '0.2em 0.4em',
+                                    borderRadius: '0.25rem',
+                                    fontSize: '0.875em',
+                                },
+                                '& pre code': {
+                                    backgroundColor: 'transparent',
+                                    color: 'inherit',
+                                    padding: '0',
+                                    fontSize: '0.875em',
+                                },
+                            }
+                        })
+                    }
+                ]
+            }
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(-45deg, #0a0a0a, #1a1a1a, #0f172a, #1e1b4b);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            color: #ffffff;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+
+        .premium-card {
+            background: linear-gradient(145deg, #242424, #1a1a1a);
+            border: 1px solid #333333;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .accent-glow {
+            box-shadow: 0 0 50px rgba(99, 102, 241, 0.3);
+        }
+
+        .message-user {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 20px 20px 6px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message-user::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+
+        .message-ai {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px 20px 20px 6px;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .message-actions {
+            position: absolute;
+            top: -12px;
+            right: 12px;
+            display: flex;
+            gap: 4px;
+            background: #242424;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            padding: 4px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .message-wrapper:hover .message-actions {
+            opacity: 1;
+        }
+
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #6366f1;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes typing {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 10px;
+        }
+
+        .input-glow:focus {
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+            border-color: #6366f1;
+        }
+
+        .slide-up {
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .file-preview {
+            transition: all 0.3s ease;
+        }
+
+        .file-preview:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* PDF Text Modal */
+        .pdf-modal {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Settings Modal */
+        .settings-modal {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+
+<body class="font-outfit">
+
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 settings-modal flex items-center justify-center z-50 hidden">
+        <div class="premium-card p-6 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-white">Image Generation Settings</h3>
+                <button onclick="closeSettingsModal()" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Image Generation Service</label>
+                    <select id="image-service"
+                        class="w-full p-3 bg-premium-card border border-premium-border rounded-xl text-white focus:outline-none input-glow">
+                        <option value="pollinations">Pollinations.ai (Free - Recommended)</option>
+                        <option value="picsum">Lorem Picsum (Random - Fallback)</option>
+                    </select>
+                </div>
+
+                <div class="p-4 bg-accent-primary/10 rounded-xl border border-accent-primary/30">
+                    <h4 class="text-accent-primary font-semibold mb-2">Free Services Info:</h4>
+                    <p class="text-gray-300 text-sm">
+                        <strong>Pollinations.ai:</strong> AI-generated images based on your prompt. Completely free, no
+                        API key needed.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-3 mt-6">
+                <button onclick="closeSettingsModal()"
+                    class="px-4 py-2 bg-premium-card border border-premium-border text-gray-300 rounded-xl hover:bg-gray-800 transition-all">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="min-h-screen flex flex-col p-6 max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-8">
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <div
+                        class="w-14 h-14 bg-gradient-to-br from-accent-primary to-accent-secondary rounded-2xl flex items-center justify-center accent-glow">
+                        <i class="fas fa-brain text-white text-2xl"></i>
+                    </div>
+                    <div
+                        class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-premium-dark">
+                    </div>
+                </div>
+                <div>
+                    <h1
+                        class="text-3xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                        Omnibot AI
+                    </h1>
+                    <p class="text-gray-400 text-sm">Premium Multi-Modal Intelligence</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <div class="text-right">
+                    <div class="text-xs text-gray-400">Image Service</div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <span class="text-sm font-medium text-green-400" id="current-service">Pollinations.ai</span>
+                    </div>
+                </div>
+                <button onclick="openSettingsModal()"
+                    class="p-3 bg-premium-card border border-premium-border rounded-xl hover:border-accent-primary transition-all">
+                    <i class="fas fa-cog text-gray-400 hover:text-accent-primary text-lg"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Grid -->
+        <div class="flex-1 grid grid-cols-4 gap-8">
+            <!-- Sidebar -->
+            <div class="col-span-1">
+                <div class="premium-card p-6 h-full">
+                    <h3 class="text-lg font-semibold mb-6 text-white">Navigation</h3>
+
+                    <div class="space-y-3 mb-8">
+                        <button onclick="setMode('chat')" id="mode-chat-btn"
+                            class="w-full p-4 rounded-xl bg-gradient-to-r from-accent-primary to-accent-secondary text-white font-medium text-left transition-all duration-300 hover:scale-105">
+                            <i class="fas fa-comments mr-3"></i>
+                            Chat & Analysis
+                        </button>
+                        <button onclick="setMode('image-gen')" id="mode-image-gen-btn"
+                            class="w-full p-4 rounded-xl bg-premium-card text-gray-400 border border-premium-border font-medium text-left transition-all duration-300 hover:scale-105 hover:border-accent-primary/50">
+                            <i class="fas fa-palette mr-3"></i>
+                            Generate Image
+                        </button>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Quick Actions</h4>
+                        <button onclick="quickAction('intro')"
+                            class="w-full p-3 rounded-lg bg-premium-card text-gray-300 text-sm text-left hover:bg-accent-primary/10 hover:text-white transition-all">
+                            <i class="fas fa-robot mr-2"></i>
+                            Introduce Yourself
+                        </button>
+                        <button onclick="quickAction('image-examples')"
+                            class="w-full p-3 rounded-lg bg-premium-card text-gray-300 text-sm text-left hover:bg-accent-primary/10 hover:text-white transition-all">
+                            <i class="fas fa-lightbulb mr-2"></i>
+                            Image Examples
+                        </button>
+                        <button onclick="quickAction('capabilities')"
+                            class="w-full p-3 rounded-lg bg-premium-card text-gray-300 text-sm text-left hover:bg-accent-primary/10 hover:text-white transition-all">
+                            <i class="fas fa-stars mr-2"></i>
+                            Show Capabilities
+                        </button>
+                        <button onclick="exportChatHistory()"
+                            class="w-full p-3 rounded-lg bg-premium-card text-gray-300 text-sm text-left hover:bg-green-500/10 hover:text-green-400 transition-all">
+                            <i class="fas fa-download mr-2"></i>
+                            Export Chat
+                        </button>
+                        <button onclick="quickAction('clear')"
+                            class="w-full p-3 rounded-lg bg-premium-card text-gray-300 text-sm text-left hover:bg-red-500/10 hover:text-red-400 transition-all">
+                            <i class="fas fa-trash mr-2"></i>
+                            Clear Conversation
+                        </button>
+                    </div>
+
+                    <!-- File Upload Stats -->
+                    <div class="mt-8 pt-6 border-t border-premium-border">
+                        <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Upload Stats</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300 text-sm">Images</span>
+                                <span class="text-accent-primary font-medium" id="image-count">0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300 text-sm">Documents</span>
+                                <span class="text-accent-primary font-medium" id="doc-count">0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300 text-sm">Total Files</span>
+                                <span class="text-accent-primary font-medium" id="total-files">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-4 bg-green-500/10 rounded-xl border border-green-500/30">
+                        <h4 class="text-green-400 font-semibold mb-2">Pro Tip:</h4>
+                        <p class="text-gray-300 text-xs">
+                            For best image results, be descriptive! Try: "a majestic dragon flying over a medieval
+                            castle at sunset"
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Area -->
+            <div class="col-span-3 flex flex-col">
+                <!-- Chat Header -->
+                <div class="premium-card p-6 mb-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white" id="mode-title">Conversation</h2>
+                            <p class="text-gray-400" id="mode-description">Real-time chat with advanced AI capabilities
+                            </p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="text-right">
+                                <div class="text-xs text-gray-400">Response Time</div>
+                                <div class="text-sm font-medium text-green-400">
+                                    < 1.2s</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages -->
+                    <div id="chat-container"
+                        class="flex-1 premium-card p-6 mb-6 overflow-y-auto scrollbar-thin max-h-[500px]">
+                        <div class="text-center py-12">
+                            <div
+                                class="w-24 h-24 bg-gradient-to-br from-accent-primary to-accent-secondary rounded-3xl flex items-center justify-center mx-auto mb-6 accent-glow animate-float">
+                                <i class="fas fa-robot text-white text-3xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-3">Welcome to Omnibot AI</h3>
+                            <p class="text-gray-400 max-w-md mx-auto text-lg">
+                                Your premium multi-modal AI assistant. Now with FREE AI image generation!
+                            </p>
+                            <div class="mt-6 grid grid-cols-2 gap-3 max-w-sm mx-auto">
+                                <div class="p-3 bg-premium-card rounded-lg border border-premium-border">
+                                    <i class="fas fa-image text-purple-400 text-lg mb-2"></i>
+                                    <div class="text-xs text-gray-300">AI Image Generation</div>
+                                </div>
+                                <div class="p-3 bg-premium-card rounded-lg border border-premium-border">
+                                    <i class="fas fa-file-pdf text-red-400 text-lg mb-2"></i>
+                                    <div class="text-xs text-gray-300">PDF Analysis</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="premium-card p-6">
+                        <!-- File Previews -->
+                        <div id="file-previews-container" class="hidden mb-4 space-y-3">
+                            <!-- Preview items will be added here dynamically -->
+                        </div>
+
+                        <!-- Input Controls -->
+                        <div class="flex space-x-4 items-end">
+                            <!-- File Upload Menu -->
+                            <div class="relative" id="file-upload-container">
+                                <button id="file-menu-button"
+                                    class="p-4 bg-premium-card border border-premium-border rounded-xl hover:border-accent-primary transition-all duration-300 cursor-pointer group">
+                                    <i
+                                        class="fas fa-paperclip text-gray-400 group-hover:text-accent-primary text-lg"></i>
+                                </button>
+                                <!-- Dropdown Menu -->
+                                <div id="file-dropdown-menu"
+                                    class="absolute bottom-full left-0 mb-2 hidden premium-card p-2 rounded-xl border border-premium-border shadow-2xl min-w-[140px] z-50">
+                                    <label for="image-upload"
+                                        class="flex items-center space-x-2 p-2 rounded-lg hover:bg-accent-primary/10 cursor-pointer transition-all file-upload-option">
+                                        <i class="fas fa-image text-purple-400"></i>
+                                        <span class="text-sm text-gray-300">Image</span>
+                                    </label>
+                                    <label for="doc-upload"
+                                        class="flex items-center space-x-2 p-2 rounded-lg hover:bg-accent-primary/10 cursor-pointer transition-all file-upload-option">
+                                        <i class="fas fa-file text-blue-400"></i>
+                                        <span class="text-sm text-gray-300">Document (PDF/Word/Text)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Hidden File Inputs -->
+                            <input type="file" id="image-upload" accept="image/*" class="hidden"
+                                onchange="handleFileUpload(event, 'image')">
+                            <input type="file" id="doc-upload" accept=".pdf,.doc,.docx,.txt,.rtf" class="hidden"
+                                onchange="handleFileUpload(event, 'document')">
+
+                            <!-- Text Input -->
+                            <div class="flex-1 relative">
+                                <input type="text" id="user-input" placeholder="Ask Omnibot anything or upload files..."
+                                    class="w-full p-4 pr-12 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary focus:bg-gray-900 transition-all duration-300 shadow-inner">
+
+                                <!-- Voice Input -->
+                                <button id="mic-btn" onclick="speakToText()"
+                                    class="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-accent-primary transition-colors">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                            </div>
+
+                            <!-- Send Button -->
+                            <button id="send-btn" onclick="sendMessage()"
+                                class="p-4 bg-gradient-to-r from-accent-primary to-accent-secondary text-white rounded-xl hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 accent-glow">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+
+                        <!-- Mode Info -->
+                        <div class="mt-4 text-center">
+                            <p id="mode-info" class="text-sm text-gray-400">
+                                <i class="fas fa-info-circle mr-2 text-accent-primary"></i>
+                                <span id="mode-text">Chat mode: Upload images or documents (PDF/Word/Text)</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="mt-8 text-center">
+                <p class="text-gray-500 text-sm">
+                    Omnibot AI • Premium Multi-Modal Assistant • Now with FREE AI Image Generation
+                </p>
+            </footer>
+        </div>
+
+        <script>
+            // Configuration
+            const API_KEY = "AIzaSyB5X68zSR3JdrpW1F4bqIAGWshYvnquJqc";
+                const CHAT_MODEL = "models/gemini-2.5-flash";
+                const TTS_MODEL = "models/gemini-2.5-flash-lite";
+                const apiUrlBase = `https://generativelanguage.googleapis.com/v1beta/`;
+
+                // DOM Elements
+                const chatContainer = document.getElementById('chat-container');
+                const userInput = document.getElementById('user-input');
+                const sendBtn = document.getElementById('send-btn');
+                const filePreviewsContainer = document.getElementById('file-previews-container');
+                const micBtn = document.getElementById('mic-btn');
+                const modeInfo = document.getElementById('mode-info');
+                const modeText = document.getElementById('mode-text');
+                const modeTitle = document.getElementById('mode-title');
+                const modeDescription = document.getElementById('mode-description');
+                const modeChatBtn = document.getElementById('mode-chat-btn');
+                const modeImageGenBtn = document.getElementById('mode-image-gen-btn');
+                const imageCountEl = document.getElementById('image-count');
+                const docCountEl = document.getElementById('doc-count');
+                const totalFilesEl = document.getElementById('total-files');
+                const pdfModal = document.getElementById('pdf-modal');
+                const pdfTextInput = document.getElementById('pdf-text-input');
+                const settingsModal = document.getElementById('settings-modal');
+                const imageServiceSelect = document.getElementById('image-service');
+                const currentServiceEl = document.getElementById('current-service');
+
+                // State
+                let isSending = false;
+                let isListening = false;
+                let currentMode = 'chat';
+                let imageService = 'pollinations'; // Default service
+                let uploadedFiles = {
+                    images: [],
+                    documents: []
+                };
+                let chatHistory = JSON.parse(localStorage.getItem('omnibot_chat_history')) || []; // Stores context history for Gemini
+
+                function saveChatHistory() {
+                localStorage.setItem('omnibot_chat_history', JSON.stringify(chatHistory));
+            }
+
+            function loadAndRenderChatHistory() {
+                if (chatHistory.length > 0) {
+                    chatHistory.forEach(msg => {
+                        if (msg.role === 'user') {
+                            displayMessage('user', msg.parts.map(p => p.text).join(' '));
+                        } else if (msg.role === 'model') {
+                            displayMessage('ai', msg.parts.map(p => p.text).join(' '), 'text');
+                        }
+                    });
+                }
+            }
+
+            // Initialize Markdown Parser
+            marked.setOptions({
+                highlight: function (code, lang) {
+                    const language = highlight.getLanguage(lang) ? lang : 'plaintext';
+                    return highlight.highlight(code, { language }).value;
+                },
+                langPrefix: 'hljs language-',
+                breaks: true,
+                gfm: true
+            });
+
+            // Speech Recognition
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            let recognition = null;
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.lang = 'en-US';
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+            } else {
+                micBtn.style.display = 'none';
+            }
+
+
+            // ==================== SETTINGS FUNCTIONS ====================
+
+            function openSettingsModal() {
+                settingsModal.classList.remove('hidden');
+                imageServiceSelect.value = imageService;
+                closeAllDropdowns();
+            }
+
+            function closeSettingsModal() {
+                settingsModal.classList.add('hidden');
+            }
+
+            function updateImageService() {
+                imageService = imageServiceSelect.value;
+                currentServiceEl.textContent =
+                    imageService === 'pollinations' ? 'Pollinations.ai' : 'Lorem Picsum';
+                closeSettingsModal();
+                displayMessage('ai', `Switched to ${imageService === 'pollinations' ? 'AI image generation' : 'random images'} service.`);
+            }
+
+
+
+            // ==================== FILE UPLOAD MENU FUNCTIONS ====================
+
+            function setupFileUploadMenu() {
+                const fileMenuButton = document.getElementById('file-menu-button');
+                const fileDropdownMenu = document.getElementById('file-dropdown-menu');
+                const fileUploadOptions = document.querySelectorAll('.file-upload-option');
+
+                // Toggle dropdown on button click
+                fileMenuButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isHidden = fileDropdownMenu.classList.contains('hidden');
+
+                    // Close all other dropdowns first
+                    closeAllDropdowns();
+
+                    // Toggle this dropdown
+                    if (isHidden) {
+                        fileDropdownMenu.classList.remove('hidden');
+                    } else {
+                        fileDropdownMenu.classList.add('hidden');
+                    }
+                });
+
+                // Close dropdown when clicking on options
+                fileUploadOptions.forEach(option => {
+                    option.addEventListener('click', () => {
+                        fileDropdownMenu.classList.add('hidden');
+                    });
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!fileDropdownMenu.contains(e.target) && !fileMenuButton.contains(e.target)) {
+                        fileDropdownMenu.classList.add('hidden');
+                    }
+                });
+
+                // Close dropdown on escape key
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        fileDropdownMenu.classList.add('hidden');
+                    }
+                });
+            }
+
+            function closeAllDropdowns() {
+                const dropdowns = document.querySelectorAll('[id$="dropdown-menu"]');
+                dropdowns.forEach(dropdown => {
+                    dropdown.classList.add('hidden');
+                });
+            }
+
+            // ==================== FILE UPLOAD FUNCTIONS ====================
+
+            function handleFileUpload(event, type) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                // Validate file size (10MB limit)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File size too large. Please upload files smaller than 10MB.');
+                    return;
+                }
+
+                if (type === 'image') {
+                    handleImageUpload(file);
+                } else {
+                    handleDocumentUpload(file);
+                }
+            }
+
+            function handleImageUpload(file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const fileId = 'file_' + Date.now();
+                    uploadedFiles.images.push({
+                        id: fileId,
+                        file: file,
+                        dataUrl: e.target.result
+                    });
+
+                    addFilePreview(fileId, file.name, 'image', e.target.result);
+                    updateFileStats();
+                    updateSendButtonState();
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function handleDocumentUpload(file) {
+                const fileId = 'file_' + Date.now();
+                uploadedFiles.documents.push({
+                    id: fileId,
+                    file: file
+                });
+
+                addFilePreview(fileId, file.name, 'document', getFileIcon(file.name));
+                updateFileStats();
+                updateSendButtonState();
+            }
+
+            function getFileIcon(filename) {
+                const ext = filename.split('.').pop().toLowerCase();
+                const icons = {
+                    'pdf': 'fas fa-file-pdf text-red-400',
+                    'doc': 'fas fa-file-word text-blue-400',
+                    'docx': 'fas fa-file-word text-blue-400',
+                    'txt': 'fas fa-file-alt text-gray-400',
+                    'rtf': 'fas fa-file-text text-orange-400'
+                };
+                return icons[ext] || 'fas fa-file text-gray-400';
+            }
+
+            function addFilePreview(fileId, filename, type, previewData) {
+                filePreviewsContainer.classList.remove('hidden');
+
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'file-preview premium-card p-3 rounded-xl border border-premium-border flex items-center justify-between';
+                previewDiv.id = fileId;
+
+                if (type === 'image') {
+                    previewDiv.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-lg overflow-hidden bg-premium-card">
+                            <img src="${previewData}" alt="Preview" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <div class="text-sm text-white font-medium truncate max-w-[150px]">${filename}</div>
+                            <div class="text-xs text-gray-400 flex items-center space-x-1">
+                                <i class="fas fa-image text-purple-400"></i>
+                                <span>Image</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="removeFile('${fileId}', '${type}')" class="text-red-400 hover:text-red-300 transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                } else {
+                    const iconClass = getFileIcon(filename);
+                    previewDiv.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-lg bg-premium-card flex items-center justify-center">
+                            <i class="${iconClass} text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm text-white font-medium truncate max-w-[150px]">${filename}</div>
+                            <div class="text-xs text-gray-400 flex items-center space-x-1">
+                                <i class="fas fa-file text-blue-400"></i>
+                                <span>Document</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="removeFile('${fileId}', '${type}')" class="text-red-400 hover:text-red-300 transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                }
+
+                filePreviewsContainer.appendChild(previewDiv);
+            }
+
+            function removeFile(fileId, type) {
+                if (type === 'image') {
+                    uploadedFiles.images = uploadedFiles.images.filter(file => file.id !== fileId);
+                } else {
+                    uploadedFiles.documents = uploadedFiles.documents.filter(file => file.id !== fileId);
+                }
+
+                const previewElement = document.getElementById(fileId);
+                if (previewElement) {
+                    previewElement.remove();
+                }
+
+                // Hide preview container if no files left
+                if (uploadedFiles.images.length === 0 && uploadedFiles.documents.length === 0 && !uploadedFiles.pdfText) {
+                    filePreviewsContainer.classList.add('hidden');
+                }
+
+                updateFileStats();
+                updateSendButtonState();
+            }
+
+            function updateFileStats() {
+                const totalImages = uploadedFiles.images.length;
+                const totalDocs = uploadedFiles.documents.length;
+                const totalFiles = totalImages + totalDocs;
+
+                imageCountEl.textContent = totalImages;
+                docCountEl.textContent = totalDocs;
+                totalFilesEl.textContent = totalFiles;
+            }
+
+            function clearAllFiles() {
+                uploadedFiles = { images: [], documents: [] };
+                filePreviewsContainer.innerHTML = '';
+                filePreviewsContainer.classList.add('hidden');
+                updateFileStats();
+            }
+
+            // ==================== TEXT EXTRACTION FUNCTIONS ====================
+
+            async function extractTextFromFile(file) {
+                return new Promise((resolve, reject) => {
+                    if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+                        // PDF Parsing
+                        const reader = new FileReader();
+                        reader.onload = async function () {
+                            try {
+                                const typedarray = new Uint8Array(this.result);
+                                const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                                let extractedText = '';
+                                for (let i = 1; i <= pdf.numPages; i++) {
+                                    const page = await pdf.getPage(i);
+                                    const textContent = await page.getTextContent();
+                                    const pageText = textContent.items.map(item => item.str).join(' ');
+                                    extractedText += pageText + '\\n';
+                                }
+                                resolve(extractedText);
+                            } catch (e) {
+                                reject(`Error parsing PDF ${file.name}: ${e.message}`);
+                            }
+                        };
+                        reader.readAsArrayBuffer(file);
+                    }
+                    else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || file.name.endsWith('.docx')) {
+                        // Word Document Parsing
+                        const reader = new FileReader();
+                        reader.onload = async function () {
+                            try {
+                                const arrayBuffer = this.result;
+                                const result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+                                resolve(result.value);
+                            } catch (e) {
+                                reject(`Error parsing Word Document ${file.name}: ${e.message}`);
+                            }
+                        };
+                        reader.readAsArrayBuffer(file);
+                    }
+                    else {
+                        // Fallback Text Parsing
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            if (file.type === 'text/plain' || file.name.endsWith('.txt') || file.name.endsWith('.csv') || file.name.endsWith('.md')) {
+                                resolve(e.target.result);
+                            } else {
+                                resolve(`File: ${file.name}\\nType: ${file.type}\\nSize: ${(file.size / 1024).toFixed(2)}KB\\n\\nUnsupported file format for direct text extraction.`);
+                            }
+                        };
+                        reader.onerror = () => reject(`Failed to read file: ${file.name}`);
+
+                        if (file.type === 'text/plain' || file.name.endsWith('.txt') || file.name.endsWith('.csv') || file.name.endsWith('.md')) {
+                            reader.readAsText(file);
+                        } else {
+                            reader.readAsDataURL(file); // Don't crash, but can't extract
+                        }
+                    }
+                });
+            }
+
+            async function extractTextFromDocuments() {
+                let extractedText = '';
+
+                for (const doc of uploadedFiles.documents) {
+                    try {
+                        const text = await extractTextFromFile(doc.file);
+                        extractedText += `\n\n--- Document: ${doc.file.name} ---\n${text}\n--- End of ${doc.file.name} ---`;
+                    } catch (error) {
+                        extractedText += `\n\n--- Document: ${doc.file.name} ---\n[Error: ${error}]\n--- End of ${doc.file.name} ---`;
+                    }
+                }
+
+                return extractedText;
+            }
+
+            // ==================== UI FUNCTIONS ====================
+
+            function updateModeDisplay() {
+                if (currentMode === 'chat') {
+                    modeTitle.textContent = 'Conversation';
+                    modeDescription.textContent = 'Real-time chat with file analysis capabilities';
+                    modeText.textContent = 'Chat mode: Upload images or documents (PDF/Word/Text)';
+                    userInput.placeholder = 'Ask Omnibot anything or upload files...';
+
+                    modeChatBtn.className = 'w-full p-4 rounded-xl bg-gradient-to-r from-accent-primary to-accent-secondary text-white font-medium text-left transition-all duration-300 hover:scale-105';
+                    modeImageGenBtn.className = 'w-full p-4 rounded-xl bg-premium-card text-gray-400 border border-premium-border font-medium text-left transition-all duration-300 hover:scale-105 hover:border-accent-primary/50';
+
+                } else {
+                    modeTitle.textContent = 'Image Generation';
+                    modeDescription.textContent = 'Create stunning AI-generated images from text descriptions';
+                    modeText.textContent = 'Image generation: Describe the image you want to create';
+                    userInput.placeholder = 'Describe the image you want to create...';
+
+                    modeImageGenBtn.className = 'w-full p-4 rounded-xl bg-gradient-to-r from-accent-primary to-accent-secondary text-white font-medium text-left transition-all duration-300 hover:scale-105';
+                    modeChatBtn.className = 'w-full p-4 rounded-xl bg-premium-card text-gray-400 border border-premium-border font-medium text-left transition-all duration-300 hover:scale-105 hover:border-accent-primary/50';
+
+                    // Clear files when switching to image generation mode
+                    clearAllFiles();
+                }
+                updateSendButtonState();
+            }
+
+            function updateSendButtonState() {
+                const hasText = userInput.value.trim().length > 0;
+                const hasFiles = uploadedFiles.images.length > 0 || uploadedFiles.documents.length > 0;
+
+                if (currentMode === 'chat') {
+                    sendBtn.disabled = !hasText && !hasFiles;
+                } else {
+                    sendBtn.disabled = !hasText;
+                }
+            }
+
+            function setMode(mode) {
+                currentMode = mode;
+                updateModeDisplay();
+            }
+
+            function quickAction(action) {
+                switch (action) {
+                    case 'intro':
+                        userInput.value = "Please introduce yourself and your capabilities including FREE AI image generation";
+                        break;
+                    case 'image-examples':
+                        userInput.value = "Show me some examples of good image generation prompts";
+                        break;
+                    case 'capabilities':
+                        userInput.value = "What are all the things you can help me with, including file analysis and image generation?";
+                        break;
+                    case 'clear':
+                        if (confirm('Clear the entire conversation history and uploaded files?')) {
+                            chatContainer.innerHTML = `
+                            <div class="text-center py-12">
+                                <div class="w-24 h-24 bg-gradient-to-br from-accent-primary to-accent-secondary rounded-3xl flex items-center justify-center mx-auto mb-6 accent-glow animate-float">
+                                    <i class="fas fa-robot text-white text-3xl"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-white mb-3">Welcome to Omnibot AI</h3>
+                                <p class="text-gray-400 max-w-md mx-auto text-lg">
+                                    Your premium multi-modal AI assistant. Now with FREE AI image generation!
+                                </p>
+                            </div>
+                        `;
+                            clearAllFiles();
+                            chatHistory = []; // Clear context memory
+                            localStorage.removeItem('omnibot_chat_history'); // Clear saved localStorage
+                        }
+                        return;
+                }
+                updateSendButtonState();
+                sendMessage();
+            }
+
+            function displayMessage(role, content, type = 'text') {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} mb-6 slide-up message-wrapper`;
+
+                const contentDiv = document.createElement('div');
+                contentDiv.className = `max-w-xl p-6 ${role === 'user' ? 'message-user' : 'message-ai'}`;
+
+                if (role === 'user') {
+                    contentDiv.innerHTML = `
+                    <div class="flex items-center space-x-3 mb-2">
+                        <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-white text-sm"></i>
+                        </div>
+                        <span class="text-white font-medium">You</span>
+                    </div>
+                    <p class="text-white/90 whitespace-pre-wrap">${content}</p>
+                `;
+                } else {
+                    if (type === 'image') {
+                        contentDiv.innerHTML = `
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-8 h-8 bg-gradient-to-br from-accent-primary to-accent-secondary rounded-full flex items-center justify-center">
+                                <i class="fas fa-robot text-white text-sm"></i>
+                            </div>
+                            <span class="text-white font-medium">Omnibot</span>
+                        </div>
+                        <img src="${content}" 
+                             alt="Generated Image" 
+                             class="rounded-xl w-full h-auto shadow-2xl border-2 border-accent-primary/30"
+                             onerror="this.onerror=null; this.src='https://placehold.co/512x512/333/FFF?text=Image+Blocked'; this.parentElement.querySelector('p').innerHTML='❌ <b class=\\'text-red-400\\'>Image Load Error:</b> The browser blocked this image.<br>Check your internet or ad-blocker.';">
+                        <p class="text-gray-300 mt-3 text-sm">🎨 Generated based on your prompt using ${imageService === 'pollinations' ? 'AI' : 'random images'}!</p>
+                    `;
+                    } else {
+                        // Parse markdown for AI text response
+                        const parsedContent = marked.parse(content);
+                        const rawTextContent = content.replace(/\\n/g, ' ').replace(/"/g, '&quot;');
+
+                        contentDiv.innerHTML = `
+                        <div class="message-actions hidden md:flex">
+                            <button onclick="copyToClipboard('${btoa(unescape(encodeURIComponent(content)))}')" class="p-2 text-gray-400 hover:text-white transition-colors" title="Copy text">
+                                <i class="far fa-copy"></i>
+                            </button>
+                            <button onclick="speakResponse(this, '${btoa(unescape(encodeURIComponent(content)))}')" class="p-2 text-gray-400 hover:text-accent-primary transition-colors" title="Speak response">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-8 h-8 bg-gradient-to-br from-accent-primary to-accent-secondary rounded-full flex items-center justify-center">
+                                <i class="fas fa-robot text-white text-sm"></i>
+                            </div>
+                            <span class="text-white font-medium">Omnibot</span>
+                        </div>
+                        <div class="prose prose-invert max-w-none mb-4">${parsedContent}</div>
+                        
+                        <!-- Mobile actions -->
+                        <div class="md:hidden flex space-x-4 border-t border-gray-700/50 pt-3 mt-4">
+                             <button onclick="copyToClipboard('${btoa(unescape(encodeURIComponent(content)))}')" class="text-gray-400 hover:text-white transition-colors text-sm flex items-center space-x-2">
+                                <i class="far fa-copy"></i> <span>Copy</span>
+                            </button>
+                            <button onclick="speakResponse(this, '${btoa(unescape(encodeURIComponent(content)))}')" class="text-gray-400 hover:text-accent-primary transition-colors text-sm flex items-center space-x-2">
+                                <i class="fas fa-volume-up"></i> <span>Speak</span>
+                            </button>
+                        </div>
+                    `;
+                    }
+                }
+
+                messageDiv.appendChild(contentDiv);
+                chatContainer.appendChild(messageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            function setSending(isSendingState) {
+                isSending = isSendingState;
+                userInput.disabled = isSendingState;
+                sendBtn.disabled = isSendingState;
+                micBtn.disabled = isSendingState;
+
+                if (isSendingState) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'flex justify-start mb-6 slide-up';
+                    messageDiv.innerHTML = `
+                    <div class="message-ai max-w-xs p-6">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-8 h-8 bg-gradient-to-br from-accent-primary to-accent-secondary rounded-full flex items-center justify-center">
+                                <i class="fas fa-robot text-white text-sm"></i>
+                            </div>
+                            <span class="text-white font-medium">Omnibot</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="typing-dots">
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                            </div>
+                            <span class="text-gray-400 text-sm">${currentMode === 'image-gen' ? 'Creating your image...' : 'Analyzing files...'}</span>
+                        </div>
+                    </div>
+                `;
+                    chatContainer.appendChild(messageDiv);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                } else {
+                    // Remove loading indicator
+                    const loadingIndicator = chatContainer.querySelector('.message-ai:last-child');
+                    if (loadingIndicator && loadingIndicator.querySelector('.typing-dots')) {
+                        loadingIndicator.remove();
+                    }
+                }
+            }
+
+            // ==================== CORE FUNCTIONALITY ====================
+
+            function speakToText() {
+                if (!recognition) return;
+                if (isListening) {
+                    recognition.stop();
+                    return;
+                }
+
+                recognition.onstart = () => {
+                    isListening = true;
+                    micBtn.innerHTML = '<i class="fas fa-stop text-red-400"></i>';
+                    userInput.placeholder = "Listening...";
+                };
+
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    userInput.value = transcript;
+                    updateSendButtonState();
+                    sendMessage();
+                };
+
+                recognition.onend = () => {
+                    isListening = false;
+                    micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                    updateModeDisplay();
+                };
+
+                recognition.start();
+            }
+
+            async function generateImage(prompt) {
+                try {
+                    displayMessage('user', `Generate: ${prompt}`);
+
+                    const response = await fetch("https://api.airforce/v1/images/generations", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "sk-air-m3MgsdCp9ss4mx9NhIM0SYOWKX6NSt0pFvZLNFlZpLCJhPKRAnrCaytVLBU9rUyr"
+                        },
+                        body: JSON.stringify({
+                            model: "z-image",
+                            prompt: prompt,
+                            size: "1024x1024"
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(errorText);
+                    }
+
+                    const data = await response.json();
+
+                    // Most OpenAI-style image APIs return:
+                    // { data: [{ url: "..." }] }
+
+                    const imageUrl = data?.data?.[0]?.url;
+
+                    if (!imageUrl) {
+                        throw new Error("No image URL returned from API");
+                    }
+
+                    displayMessage('ai', imageUrl, 'image');
+                    displayMessage('ai', `✅ Image generated using z-image model!`);
+
+                } catch (error) {
+                    console.error("Airforce z-image Error:", error);
+                    displayMessage('ai', `❌ Image generation failed: ${error.message}`);
+                }
+            }
+
+            async function sendMessage() {
+                if (isSending) return;
+
+                const userText = userInput.value.trim();
+                const hasFiles = uploadedFiles.images.length > 0 || uploadedFiles.documents.length > 0;
+
+                if (!userText && currentMode === 'image-gen') return;
+                if (!userText && !hasFiles && currentMode === 'chat') return;
+
+                setSending(true);
+                userInput.value = '';
+
+                if (currentMode === 'image-gen') {
+                    await generateImage(userText);
+                } else {
+                    // Build display content for user message
+                    let displayContent = userText;
+                    if (uploadedFiles.images.length > 0) {
+                        displayContent += ` [${uploadedFiles.images.length} image(s) uploaded]`;
+                    }
+                    if (uploadedFiles.documents.length > 0) {
+                        displayContent += ` [${uploadedFiles.documents.length} document(s) uploaded]`;
+                    }
+
+                    if (userText || hasFiles) {
+                        displayMessage('user', displayContent);
+                    }
+
+                    try {
+                        let finalPrompt = userText;
+
+                        // Add document extraction processing directly to prompt if documents exist
+                        if (uploadedFiles.documents.length > 0) {
+                            const extractedText = await extractTextFromDocuments();
+                            finalPrompt += `\\n\\nI have uploaded ${uploadedFiles.documents.length} document(s). Here is the content:${extractedText}\\n\\nPlease analyze this document content and help me with: ${userText || 'understanding the document'}`;
+                        }
+
+                        // Build single payload of current message along with uploaded images
+                        const currentMessageParts = await buildPayload(finalPrompt, uploadedFiles.images);
+
+                        // Push new user message into memory
+                        chatHistory.push({ role: "user", parts: currentMessageParts.parts });
+                        saveChatHistory();
+
+                        const payload = {
+                            contents: chatHistory,
+                            systemInstruction: {
+                                parts: [{
+                                    text: `You are Omnibot, a helpful multi-modal assistant. 
+                            
+        For IMAGES: Analyze and describe the visual content. Answer questions about what you see in the images.
+
+        For DOCUMENTS: Carefully analyze the document content provided. Summarize key points, answer specific questions about the content, and provide insights based on the text.
+
+        Always be thorough, accurate, and professional in your responses. Format your text responsively using Markdown if applicable.` }]
+                            },
+                            tools: [
+                                {
+                                    googleSearch: {}
+                                }
+                            ]
+                        };
+
+                        const apiUrl = `${apiUrlBase}${CHAT_MODEL}:generateContent?key=${API_KEY}`;
+
+                        const response = await fetchWithBackoff(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        const result = await response.json();
+                        const candidate = result.candidates?.[0];
+
+                        if (candidate && candidate.content?.parts?.[0]?.text) {
+                            const text = candidate.content.parts[0].text;
+                            // Push AI response to memory
+                            chatHistory.push({ role: "model", parts: [{ text: text }] });
+                            saveChatHistory();
+                            displayMessage('ai', text, 'text');
+                        } else {
+                            // If API didn't respond correctly, revert user message from history
+                            chatHistory.pop();
+                            saveChatHistory();
+                            displayMessage('ai', "Sorry, I couldn't get a response from Omnibot. Try again.", 'text');
+                        }
+
+                    } catch (error) {
+                        // Revert user message from history on error
+                        chatHistory.pop();
+                        saveChatHistory();
+                        console.error("Chat API Error:", error);
+                        displayMessage('ai', `An error occurred: ${error.message}`, 'text');
+                    }
+                }
+
+                // Clear files after sending
+                clearAllFiles();
+                setSending(false);
+                updateSendButtonState();
+            }
+
+            function buildPayload(userText, imageFiles) {
+                const parts = [];
+
+                if (userText) {
+                    parts.push({ text: userText });
+                }
+
+                if (imageFiles && imageFiles.length > 0) {
+                    // Add all uploaded images to the payload
+                    const imagePromises = imageFiles.map(imageFile => {
+                        return new Promise((resolve) => {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                const base64Data = e.target.result.split(',')[1];
+                                resolve({
+                                    inlineData: {
+                                        mimeType: imageFile.file.type,
+                                        data: base64Data
+                                    }
+                                });
+                            };
+                            reader.readAsDataURL(imageFile.file);
+                        });
+                    });
+
+                    return Promise.all(imagePromises).then(imageParts => {
+                        return { parts: [...parts, ...imageParts] };
+                    });
+                }
+
+                return Promise.resolve({ parts: parts });
+            }
+
+            // ==================== CHAT EXPORT ====================
+            function exportChatHistory() {
+                if (chatHistory.length === 0) {
+                    alert('Chat history is empty!');
+                    return;
+                }
+
+                let exportText = "=== Omnibot Chat Export ===\\n\\n";
+                let dateStr = new Date().toLocaleString();
+                exportText += `Date Exported: ${dateStr}\\n\\n`;
+
+                chatHistory.forEach((msg, index) => {
+                    const prefix = msg.role === 'user' ? "You: " : "Omnibot: ";
+
+                    // Condensate array of parts into single string for export
+                    let msgContent = "";
+                    msg.parts.forEach(part => {
+                        if (part.text) {
+                            msgContent += part.text + "\\n";
+                        } else if (part.inlineData) {
+                            msgContent += "[Image Attached]\\n";
+                        }
+                    });
+
+                    exportText += `${prefix}\\n${msgContent}\\n---\\n\\n`;
+                });
+
+                const blob = new Blob([exportText], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Omnibot_Chat_${Date.now()}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+
+            async function fetchWithBackoff(url, options, maxRetries = 5) {
+                for (let i = 0; i < maxRetries; i++) {
+                    try {
+                        const response = await fetch(url, options);
+                        if (response.status === 429 && i < maxRetries - 1) {
+                            const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                            console.warn(`Rate limit exceeded. Retrying in ${delay / 1000}s...`);
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                            continue;
+                        }
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(`HTTP error! Status: ${response.status}. Details: ${errorData.error?.message || 'Unknown Error'}`);
+                        }
+                        return response;
+                    } catch (error) {
+                        if (i === maxRetries - 1) throw error;
+                        console.error(`Attempt ${i + 1} failed: ${error.message}`);
+                    }
+                }
+            }
+
+            async function speakResponse(button, base64Text) {
+                const text = decodeURIComponent(escape(atob(base64Text)));
+                if (!text) return;
+
+                button.disabled = true;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+                try {
+                    const payload = {
+                        contents: [{ parts: [{ text: text }] }],
+                        generationConfig: {
+                            responseModalities: ["AUDIO"],
+                            speechConfig: {
+                                voiceConfig: {
+                                    prebuiltVoiceConfig: { voiceName: "Kore" }
+                                }
+                            }
+                        },
+                        model: TTS_MODEL
+                    };
+
+                    const apiUrl = `${apiUrlBase}${TTS_MODEL}:generateContent?key=${API_KEY}`;
+
+                    const response = await fetchWithBackoff(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+                    const part = result?.candidates?.[0]?.content?.parts?.[0];
+                    const audioData = part?.inlineData?.data;
+                    const mimeType = part?.inlineData?.mimeType;
+
+                    if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                        const rateMatch = mimeType.match(/rate=(\d+)/);
+                        const sampleRate = rateMatch ? parseInt(rateMatch[1], 10) : 24000;
+
+                        const pcmDataBuffer = base64ToArrayBuffer(audioData);
+                        const pcm16 = new Int16Array(pcmDataBuffer);
+                        const wavBlob = pcmToWav(pcm16, sampleRate);
+                        const audioUrl = URL.createObjectURL(wavBlob);
+
+                        const audio = new Audio(audioUrl);
+                        audio.play();
+
+                        audio.onended = () => {
+                            button.disabled = false;
+                            button.innerHTML = '<i class="fas fa-volume-up"></i><span class="text-sm">Speak response</span>';
+                        };
+
+                    } else {
+                        console.error("TTS response error:", result);
+                    }
+
+                } catch (error) {
+                    console.error("TTS API Error:", error);
+                } finally {
+                    button.disabled = false;
+                    button.innerHTML = '<i class="fas fa-volume-up"></i><span class="text-sm">Speak response</span>';
+                }
+            }
+
+            function base64ToArrayBuffer(base64) {
+                const binaryString = atob(base64);
+                const len = binaryString.length;
+                const bytes = new Uint8Array(len);
+                for (let i = 0; i < len; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                return bytes.buffer;
+            }
+
+            function copyToClipboard(base64Text) {
+                const text = decodeURIComponent(escape(atob(base64Text)));
+                if (!text) return;
+
+                navigator.clipboard.writeText(text).then(() => {
+                    displayMessage('ai', '📋 Text copied to clipboard!');
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                });
+            }
+
+            function pcmToWav(pcmData, sampleRate) {
+                const numChannels = 1;
+                const bitsPerSample = 16;
+                const byteRate = sampleRate * numChannels * (bitsPerSample / 8);
+                const blockAlign = numChannels * (bitsPerSample / 8);
+                const dataSize = pcmData.length * (bitsPerSample / 8);
+
+                const buffer = new ArrayBuffer(44 + dataSize);
+                const view = new DataView(buffer);
+
+                let offset = 0;
+                function writeString(s) {
+                    for (let i = 0; i < s.length; i++) view.setUint8(offset++, s.charCodeAt(i));
+                }
+                writeString('RIFF'); offset += 4;
+                writeString('WAVE');
+                writeString('fmt ');
+                view.setUint32(offset, 16, true); offset += 4;
+                view.setUint16(offset, 1, true); offset += 2;
+                view.setUint16(offset, numChannels, true); offset += 2;
+                view.setUint32(offset, sampleRate, true); offset += 4;
+                view.setUint32(offset, byteRate, true); offset += 4;
+                view.setUint16(offset, blockAlign, true); offset += 2;
+                view.setUint16(offset, bitsPerSample, true); offset += 2;
+                writeString('data');
+                view.setUint32(offset, dataSize, true); offset += 4;
+                const pcmView = new Int16Array(buffer, offset);
+                for (let i = 0; i < pcmData.length; i++) {
+                    pcmView[i] = pcmData[i];
+                }
+                offset += dataSize;
+                view.setUint32(4, 36 + dataSize, true);
+                return new Blob([view], { type: 'audio/wav' });
+            }
+
+            // Initialize
+            window.onload = () => {
+                userInput.addEventListener('input', updateSendButtonState);
+
+                userInput.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' && !event.shiftKey) {
+                        event.preventDefault();
+                        sendMessage();
+                    }
+                });
+
+                // Initialize file upload menu
+                setupFileUploadMenu();
+
+                // Image service change listener
+                imageServiceSelect.addEventListener('change', updateImageService);
+
+                setMode('chat');
+
+                // Render any saved chat history from localStorage
+                loadAndRenderChatHistory();
+            };
+
+            // Expose functions
+            window.sendMessage = sendMessage;
+            window.handleFileUpload = handleFileUpload;
+            window.removeFile = removeFile;
+            window.speakResponse = speakResponse;
+            window.setMode = setMode;
+            window.speakToText = speakToText;
+            window.quickAction = quickAction;
+            window.openSettingsModal = openSettingsModal;
+            window.closeSettingsModal = closeSettingsModal;
+            window.updateImageService = updateImageService;
+            window.exportChatHistory = exportChatHistory;
+            window.copyToClipboard = copyToClipboard;
+        </script>
+</body>
+
+</html>
